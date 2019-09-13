@@ -1,5 +1,7 @@
 package com.londonappbrewery.magiceightball;
 
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +13,8 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
+    private int mPingSoundId;
+    private SoundPool mSoundPool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.ball5
         };
 
+        mSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+
+
 
         askButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +49,29 @@ public class MainActivity extends AppCompatActivity {
 
                 ballView.setImageResource (callArray[ballSelected]);
 
+                PlayPing();
+
+
+
+            }
+        });
+
+
+
+
+
+    }
+
+    public void PlayPing(){
+
+        Log.d("8Ball","play sound");
+
+        final int audioResId = mSoundPool.load(getApplicationContext(), R.raw.edsward_ping, 0);
+
+        mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int mySoundId, int status) {
+                mSoundPool.play(audioResId, 1.0f, 1.0f, 0, 0, 1);
             }
         });
 
